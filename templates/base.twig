@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>{% block title %}My gallery {% endblock %}</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="../index.php">PhotoLog</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="../index.php">Home</a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ms-auto">
+                {% if session.user_id %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <strong>{{ session.username }}</strong>
+                            {% if session.role == 'admin' %}
+                                <span class="badge bg-danger ms-1">Admin</span>
+                            {% endif %}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            {% if session.role == 'admin' %}
+{#                                <li><a class="dropdown-item text-warning" href="admin.php">Admin Panel</a></li>#}
+                                <li><hr class="dropdown-divider"></li>
+                            {% endif %}
+{#                            <li><a class="dropdown-item" href="my_galleries.php">My Galleries</a></li>#}
+{#                            <li><a class="dropdown-item" href="profile.php">My Profile</a></li>#}
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="../logout.php">Logout</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="../login.php">Login</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+    {% block content %}
+        {# Content from other files will go here #}
+    {% endblock %}
+</main>
+
+<footer class="text-center mt-5 py-4 border-top">
+    <p class="text-muted">&copy; 2026 My Twig Project</p>
+</footer>
+
+<script src="../js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

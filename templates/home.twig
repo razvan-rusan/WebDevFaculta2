@@ -1,0 +1,25 @@
+{% extends "base.twig" %}
+
+{% block title %} Home - {{ page_title }}{% endblock %}
+
+{% block content %}
+    <div class="p-5 mb-4 bg-light rounded-3 shadow-sm">
+        <h1 class="display-5 fw-bold">Welcome, Artist!</h1>
+        <p class="col-md-8 fs-4">This gallery is powered by PHP, Twig and Bootstrap.</p>
+    </div>
+
+    <div class="row">
+        {% for gallery in galleries %}
+            <div class="col-md-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{ gallery.name }}</h5>
+                    <div class="p-1 fw-light text-secondary">By author: {{ gallery.author_name }}</div>
+                    <p class="card-text">{{ gallery.description }}</p>
+                    <a href="#" class="btn btn-outline-primary w-100">Explore</a>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-info">No galleries found at this time to be displayed.</div>
+        {% endfor %}
+    </div>
+{% endblock %}

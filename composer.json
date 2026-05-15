@@ -1,0 +1,21 @@
+{
+    "name": "razvan/web-dev-faculta2",
+    "description": "Proiect de semestru la materia de web.",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Razvan\\WebDevFaculta2\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "razvan-rusan",
+            "email": "rusanrazvan@gmail.com"
+        }
+    ],
+    "require": {
+        "twig/twig": "^3.24",
+        "ext-pdo": "*"
+    }
+}
