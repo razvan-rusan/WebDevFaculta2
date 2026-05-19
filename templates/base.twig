@@ -62,11 +62,10 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             {% if session.role == 'admin' %}
-{#                                <li><a class="dropdown-item text-warning" href="admin.php">Admin Panel</a></li>#}
+                                <li><a class="dropdown-item text-danger fw-bold" href="../admin.php">Admin Panel</a></li>
                                 <li><hr class="dropdown-divider"></li>
                             {% endif %}
-{#                            <li><a class="dropdown-item" href="my_galleries.php">My Galleries</a></li>#}
-{#                            <li><a class="dropdown-item" href="profile.php">My Profile</a></li>#}
+                            <li><a class="dropdown-item" href="../my_content.php">Conținutul Meu</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item text-danger" href="../logout.php">Logout</a></li>
                         </ul>

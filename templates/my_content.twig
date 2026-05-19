@@ -1,0 +1,80 @@
+{% extends "base.twig" %}
+
+{% block title %} {{ page_title }} {% endblock %}
+
+{% block content %}
+    <div class="row mb-4">
+        <div class="col">
+            <h2 class="text-primary">Conținutul Meu</h2>
+            <p class="text-muted">Aici poți vedea toate galeriile și articolele pe care le-ai creat.</p>
+        </div>
+    </div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs mb-4" id="myContentTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="my-galleries-tab" data-bs-toggle="tab" data-bs-target="#my-galleries" type="button" role="tab">Galeriile Mele</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="my-articles-tab" data-bs-toggle="tab" data-bs-target="#my-articles" type="button" role="tab">Articolele Mele</button>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content" id="myContentTabsContent">
+        <!-- My Galleries Tab -->
+        <div class="tab-pane fade show active" id="my-galleries" role="tabpanel">
+            <div class="row g-4">
+                {% for gallery in galleries %}
+                    <div class="col-md-4">
+                        <div class="card h-100 bg-dark border-secondary">
+                            <div class="card-body">
+                                <h5 class="card-title text-light">{{ gallery.name }}</h5>
+                                <div class="mt-3">
+                                    <a href="../gallery.php?galleryId={{ gallery.id }}" class="btn btn-sm btn-info">Vezi</a>
+                                    <button class="btn btn-sm btn-outline-warning">Editează</button>
+                                    <button class="btn btn-sm btn-outline-danger">Șterge</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-12">
+                        <div class="alert alert-info bg-dark border-secondary text-light">Nu ai creat nicio galerie încă.</div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="mt-4">
+                <button class="btn btn-success">+ Adaugă Galerie Nouă</button>
+            </div>
+        </div>
+
+        <!-- My Articles Tab -->
+        <div class="tab-pane fade" id="my-articles" role="tabpanel">
+            <div class="row g-4">
+                {% for article in articles %}
+                    <div class="col-12">
+                        <div class="card bg-dark border-secondary">
+                            <div class="card-body">
+                                <h5 class="card-title text-light">{{ article.title }}</h5>
+                                <p class="card-text text-muted">{{ article.content|slice(0, 150) }}...</p>
+                                <div class="mt-2">
+                                    <button class="btn btn-sm btn-outline-info">Citește</button>
+                                    <button class="btn btn-sm btn-outline-warning">Editează</button>
+                                    <button class="btn btn-sm btn-outline-danger">Șterge</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-12">
+                        <div class="alert alert-info bg-dark border-secondary text-light">Nu ai scris niciun articol încă.</div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="mt-4">
+                <button class="btn btn-success">+ Scrie Articol Nou</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
