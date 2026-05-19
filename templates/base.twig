@@ -8,29 +8,34 @@
 
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #1a1917; /
+            color: #e3e3e3;
         }
 
         .navbar {
             margin-bottom: 2rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
 
         .card {
-            border: none;
             border-radius: 12px;
-            transition: transform 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4) !important;
+        }
+
+        .text-muted {
+            color: #b3b3b3 !important;
         }
     </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
-        <a class="navbar-brand" href="../index.php">PhotoLog</a>
+        <a class="navbar-brand" href="../index.php">Solanum</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -39,7 +44,10 @@
         <div class="collapse navbar-collapse" id="mainNavbar">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="../index.php">Home</a>
+                    <a class="nav-link" href="../index.php">Acasă</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../index.php"></a>
                 </li>
             </ul>
 

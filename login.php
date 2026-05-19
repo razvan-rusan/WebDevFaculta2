@@ -4,6 +4,9 @@ session_start();
 
 use Razvan\WebDevFaculta2\Auth\AuthService;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -22,10 +25,6 @@ $twig = new Environment($loader, []);
 
 try {
     echo $twig->render('login.twig', ['error' => $error ?? null]);
-} catch (\Twig\Error\LoaderError $e) {
-    error_log("Twig LoaderError: " . $e->getMessage());
-} catch (\Twig\Error\RuntimeError $e) {
-    error_log("Twig RuntimeError: " . $e->getMessage());
-} catch (\Twig\Error\SyntaxError $e) {
-    error_log("Twig SyntaxError: " . $e->getMessage());
+} catch (LoaderError|RuntimeError|SyntaxError $e) {
+    error_log($e->getMessage());
 }

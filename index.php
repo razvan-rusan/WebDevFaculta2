@@ -16,7 +16,7 @@ $twig = new Environment($loader);
 $twig->addGlobal('session', $_SESSION);
 
 $db = Database::getConnection();
-$stmt = $db->prepare("select username as author_name, name, description from
+$stmt = $db->prepare("select galleries.id, username as author_name, name, description from
 users inner join galleries on
 users.id = galleries.author_user_id");
 $stmt->execute();
@@ -27,10 +27,6 @@ try {
         ['page_title' => 'Artist Portofolio',
             'galleries' => $galleries
         ]);
-} catch (LoaderError $e) {
-    error_log("Twig LoaderError: " . $e->getMessage());
-} catch (RuntimeError $e) {
-    error_log("Twig RuntimeError: " . $e->getMessage());
-} catch (SyntaxError $e) {
-    error_log("Twig SyntaxError: " . $e->getMessage());
+} catch (LoaderError|RuntimeError|SyntaxError $e) {
+    error_log($e->getMessage());
 }

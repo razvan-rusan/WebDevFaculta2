@@ -3,23 +3,31 @@
 {% block title %} Home - {{ page_title }}{% endblock %}
 
 {% block content %}
-    <div class="p-5 mb-4 bg-light rounded-3 shadow-sm">
-        <h1 class="display-5 fw-bold">Welcome, Artist!</h1>
-        <p class="col-md-8 fs-4">This gallery is powered by PHP, Twig and Bootstrap.</p>
+    <div class="p-5 mb-5 bg-dark border border-secondary text-light rounded-3 shadow-sm">
+        <h1 class="display-5 fw-bold text-primary">Bine ai venit!</h1>
+        <p class="col-md-8 fs-5 text-muted">Acest site merită nota 10 și este făcut în Bootstrap, PHP, js + html + css.</p>
     </div>
 
-    <div class="row">
+    <div class="row g-4">
         {% for gallery in galleries %}
-            <div class="col-md-4">
-                <div class="card-body">
-                    <h5 class="card-title">{{ gallery.name }}</h5>
-                    <div class="p-1 fw-light text-secondary">By author: {{ gallery.author_name }}</div>
-                    <p class="card-text">{{ gallery.description }}</p>
-                    <a href="#" class="btn btn-outline-primary w-100">Explore</a>
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 d-flex flex-column shadow-sm bg-dark border-secondary">
+                    <div class="card-body d-flex flex-column flex-grow-1">
+                        <h5 class="card-title text-light fw-bold">{{ gallery.name }}</h5>
+                        <div class="p-0 mb-2 small text-info">De la autorul: {{ gallery.author_name }}</div>
+
+                        <p class="card-text text-muted flex-grow-1">{{ gallery.description }}</p>
+
+                        <a href="../gallery.php?galleryId={{ gallery.id }}" class="btn btn-primary w-100 mt-3">
+                            Explorează
+                        </a>
+                    </div>
                 </div>
             </div>
         {% else %}
-            <div class="alert alert-info">No galleries found at this time to be displayed.</div>
+            <div class="col-12">
+                <div class="alert alert-info">No galleries found at this time to be displayed.</div>
+            </div>
         {% endfor %}
     </div>
 {% endblock %}

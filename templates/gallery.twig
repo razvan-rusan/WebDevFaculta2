@@ -1,3 +1,25 @@
 {% extends "base.twig" %}
 
-{% block title %} Gallery
+{% block title %} Gallery - {{ gallery.name }}{% endblock %}
+
+{% block content %}
+    <h4 class="text-secondary align-content-end">By author: {{ gallery.author_name }}</h4>
+    <div>
+        {{ gallery.description }}
+    </div>
+    <div class="row g-4">
+        {% for photo in photos %}
+        <div class="col-md-4 col-sm-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body p-2 d-flex align-items-center justify-content-center bg-dark rounded">
+                    <img alt="Some missing photo" src="{{ photo.file_path }}" class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+                <div class="alert alert-info">No photos in gallery found at this time to be displayed.</div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
