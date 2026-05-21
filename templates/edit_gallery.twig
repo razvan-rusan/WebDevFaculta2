@@ -30,15 +30,15 @@
                         <input type="hidden" name="gallery_id" value="{{ gallery.id }}">
                         <div class="mb-3">
                             <label for="name" class="form-label text-light">Nume Galerie</label>
-                            <input type="text" class="form-control bg-dark text-light border-secondary" id="name" name="name" value="{{ gallery.name }}" required>
+                            <input type="text" class="form-control bg-light text-dark border-light" id="name" name="name" value="{{ gallery.name }}" required>
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label text-light">Descriere (Opțional)</label>
-                            <textarea class="form-control bg-dark text-light border-secondary" id="description" name="description" rows="3">{{ gallery.description }}</textarea>
+                            <textarea class="form-control bg-light text-dark border-light" id="description" name="description" rows="3">{{ gallery.description }}</textarea>
                         </div>
                         <div class="mb-3">
                             <label for="photo" class="form-label text-light">Încarcă Fotografie (Opțional)</label>
-                            <input type="file" class="form-control bg-dark text-light border-secondary" id="photo" name="photo" accept="image/*">
+                            <input type="file" class="form-control bg-light text-dark border-light" id="photo" name="photo" accept="image/*">
                         </div>
                         <div class="d-flex justify-content-between">
                             <a href="../my_content.php" class="btn btn-outline-secondary">Anulează</a>

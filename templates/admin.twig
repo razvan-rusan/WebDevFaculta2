@@ -6,141 +6,117 @@
     <div class="row mb-4">
         <div class="col">
             <h2 class="text-danger">Admin Panel</h2>
-            <p class="text-muted">Gestionare utilizatori și conținut personal.</p>
+            <p class="text-muted">Gestionare utilizatori.</p>
         </div>
     </div>
 
     {% if status == 'user_deleted' %}
         <div class="alert alert-success">Utilizator șters cu succes!</div>
-    {% elseif status == 'user_added' %}
-        <div class="alert alert-success">Utilizator adăugat cu succes!</div>
-    {% elseif status == 'gallery_deleted' %}
-        <div class="alert alert-success">Galerie ștearsă cu succes!</div>
-    {% elseif status == 'article_deleted' %}
-        <div class="alert alert-success">Articol șters cu succes!</div>
+    {% elseif status == 'password_reset' %}
+        <div class="alert alert-success">Parolă resetată cu succes!</div>
     {% endif %}
 
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="user-mgmt-tab" data-bs-toggle="tab" data-bs-target="#user-mgmt" type="button" role="tab">Gestionare Utilizatori</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="admin-content-tab" data-bs-toggle="tab" data-bs-target="#admin-content" type="button" role="tab">Conținutul Meu (Admin)</button>
-        </li>
-    </ul>
-
-    <!-- Tab panes -->
-    <div class="tab-content" id="adminTabsContent">
-        <!-- User Management Tab -->
-        <div class="tab-pane fade show active" id="user-mgmt" role="tabpanel">
-            <div class="card bg-dark border-secondary mb-4">
-                <div class="card-header border-secondary text-light">Adaugă Utilizator Nou</div>
-                <div class="card-body">
-                    <form action="../admin.php" method="POST" class="row g-3">
-                        <div class="col-md-4">
-                            <label>
-                                <input type="text" name="username" class="form-control bg-dark border-secondary text-light" placeholder="Username" required>
-                            </label>
-                        </div>
-                        <div class="col-md-4">
-                            <label>
-                                <input type="password" name="password" class="form-control bg-dark border-secondary text-light" placeholder="Parolă" required>
-                            </label>
-                        </div>
-                        <div class="col-md-2">
-                            <label>
-                                <select name="role" class="form-select bg-dark border-secondary text-light">
-                                    <option value="normal_user">Normal User</option>
-                                    <option value="admin">Admin</option>
-                                </select>
-                            </label>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="submit" name="add_user" class="btn btn-primary w-100">Adaugă</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <div class="table-responsive">
-                <table class="table table-dark table-hover border-secondary">
-                    <thead>
+    <div id="user-mgmt">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover border-secondary">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Rol</th>
+                        <th>Acțiuni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
                         <tr>
-                            <th>ID</th>
-                            <th>Username</th>
-                            <th>Rol</th>
-                            <th>Acțiuni</th>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>
+                                {% if user.role == 'admin' %}
+                                    <span class="badge bg-danger">Admin</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">User</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if user.id != session.user_id and user.role != 'admin' %}
+                                    <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#resetPasswordModal" data-bs-userid="{{ user.id }}" data-bs-username="{{ user.username }}">
+                                        Reset Parolă
+                                    </button>
+                                    <a href="../admin.php?delete_user_id={{ user.id }}" class="btn btn-sm btn-danger" onclick="return confirm('Sigur vrei să ștergi acest utilizator?')">Șterge</a>
+                                {% endif %}
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {% for user in users %}
-                            <tr>
-                                <td>{{ user.id }}</td>
-                                <td>{{ user.username }}</td>
-                                <td>
-                                    {% if user.role == 'admin' %}
-                                        <span class="badge bg-danger">Admin</span>
-                                    {% else %}
-                                        <span class="badge bg-secondary">User</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if user.id != session.user_id and user.role != 'admin' %}
-                                        <a href="../admin.php?delete_user_id={{ user.id }}" class="btn btn-sm btn-danger" onclick="return confirm('Sigur vrei să ștergi acest utilizator?')">Șterge</a>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
+    </div>
 
-        <!-- Admin Content Tab (Articles & Galleries) -->
-        <div class="tab-pane fade" id="admin-content" role="tabpanel">
-             <div class="row g-4">
-                <div class="col-md-6">
-                    <h4 class="text-info mb-3">Galeriile Mele</h4>
-                    <div class="list-group">
-                        {% for gallery in galleries %}
-                            <div class="list-group-item bg-dark border-secondary text-light d-flex justify-content-between align-items-center">
-                                {{ gallery.name }}
-                                <div>
-                                    <a href="../gallery.php?galleryId={{ gallery.id }}" class="btn btn-sm btn-outline-info">Vezi</a>
-                                    <a href="../edit_gallery.php?galleryId={{ gallery.id }}" class="btn btn-sm btn-outline-warning">Editează</a>
-                                    <a href="../admin.php?delete_gallery_id={{ gallery.id }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Sigur vrei să ștergi această galerie?')">Șterge</a>
-                                </div>
-                            </div>
-                        {% else %}
-                             <p class="text-muted">Nu ai galerii.</p>
-                        {% endfor %}
-                    </div>
-                    <div class="mt-3">
-                        <a href="../edit_gallery.php" class="btn btn-sm btn-success">+ Galerie Nouă</a>
-                    </div>
+    <!-- Reset Password Modal -->
+    <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-light border-secondary">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="resetPasswordModalLabel">Resetare Parolă: <span id="resetUsername"></span></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="col-md-6">
-                    <h4 class="text-info mb-3">Articolele Mele</h4>
-                    <div class="list-group">
-                        {% for article in articles %}
-                            <div class="list-group-item bg-dark border-secondary text-light d-flex justify-content-between align-items-center">
-                                {{ article.title }}
-                                <div>
-                                    <a href="../article.php?articleId={{ article.id }}" class="btn btn-sm btn-outline-info">Vezi</a>
-                                    <a href="../edit_article.php?articleId={{ article.id }}" class="btn btn-sm btn-outline-warning">Editează</a>
-                                    <a href="../admin.php?delete_article_id={{ article.id }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Sigur vrei să ștergi acest articol?')">Șterge</a>
-                                </div>
+                <form action="../admin.php" method="POST">
+                    <div class="modal-body">
+                        <input type="hidden" name="user_id" id="resetUserId">
+                        <div class="mb-3">
+                            <label for="new_password" class="form-label">Parolă Nouă</label>
+                            <div class="input-group">
+                                <input type="password" name="new_password" id="new_password" class="form-control bg-light text-dark border-light" required>
+                                <button class="btn btn-light border-light toggle-password" type="button" data-target="new_password">
+                                    <i class="bi bi-eye"></i>
+                                </button>
                             </div>
-                        {% else %}
-                            <p class="text-muted">Nu ai articole.</p>
-                        {% endfor %}
+                        </div>
                     </div>
-                    <div class="mt-3">
-                        <a href="../edit_article.php" class="btn btn-sm btn-success">+ Articol Nou</a>
+                    <div class="modal-footer border-secondary">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anulează</button>
+                        <button type="submit" name="reset_password" class="btn btn-primary">Resetează Parola</button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
+
+    <script>
+        // Password toggle logic
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const passwordInput = document.getElementById(targetId);
+                const icon = this.querySelector('i');
+
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    icon.classList.remove('bi-eye');
+                    icon.classList.add('bi-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    icon.classList.remove('bi-eye-slash');
+                    icon.classList.add('bi-eye');
+                }
+            });
+        });
+
+        const resetPasswordModal = document.getElementById('resetPasswordModal');
+        if (resetPasswordModal) {
+            resetPasswordModal.addEventListener('show.bs.modal', event => {
+                const button = event.relatedTarget;
+                const userId = button.getAttribute('data-bs-userid');
+                const username = button.getAttribute('data-bs-username');
+
+                const modalUserIdInput = resetPasswordModal.querySelector('#resetUserId');
+                const modalUsernameSpan = resetPasswordModal.querySelector('#resetUsername');
+
+                modalUserIdInput.value = userId;
+                modalUsernameSpan.textContent = username;
+            });
+        }
+    </script>
 {% endblock %}

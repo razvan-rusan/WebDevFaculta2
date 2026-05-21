@@ -9,18 +9,23 @@
             <div class="card-body">
                 <h3 class="card-title text-center mb-4 text-primary">Login</h3>
 
-                {% if error %}
-                    <div class="alert alert-danger">{{ error }}</div>
-                {% endif %}
+{#                {% if error %}#}
+{#                    <div class="alert alert-danger">{{ error }}</div>#}
+{#                {% endif %}#}
 
                 <form action="../login.php" method="POST">
                     <div class="mb-3">
                         <label for="username" class="form-label text-light">Username</label>
-                        <input type="text" name="username" id="username" class="form-control bg-dark text-light border-secondary" required>
+                        <input type="text" name="username" id="username" class="form-control bg-light text-dark border-light" required>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label text-light">Password</label>
-                        <input type="password" name="password" id="password" class="form-control bg-dark text-light border-secondary" required>
+                        <div class="input-group">
+                            <input type="password" name="password" id="password" class="form-control bg-light text-dark border-light" required>
+                            <button class="btn btn-light border-light toggle-password" type="button" data-target="password">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Sign In</button>
                 </form>
@@ -32,4 +37,24 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', function() {
+            const targetId = this.getAttribute('data-target');
+            const passwordInput = document.getElementById(targetId);
+            const icon = this.querySelector('i');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        });
+    });
+</script>
 {% endblock %}
