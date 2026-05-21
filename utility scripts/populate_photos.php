@@ -5,7 +5,7 @@ use Razvan\WebDevFaculta2\Database;
 require_once '../vendor/autoload.php';
 
 $db = Database::getConnection();
-$folderPath = '../images/*.{png}';
+$folderPath = '../images/*.{png,jpg,jpeg,gif,bmp,svg,webp}';
 $files = glob($folderPath, GLOB_BRACE);
 if (empty($files)) {
     die("No photos found.");

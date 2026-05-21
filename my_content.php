@@ -24,6 +24,25 @@ $twig->addGlobal('session', $_SESSION);
 $db = Database::getConnection();
 $userId = $_SESSION['user_id'];
 
+// Handle gallery deletion
+if (isset($_GET['delete_gallery_id'])) {
+    $stmt = $db->prepare("DELETE FROM gallery_site_db.galleries WHERE id = :id AND author_user_id = :userId");
+    $stmt->execute(['id' => $_GET['delete_gallery_id'], 'userId' => $userId]);
+    header("Location: my_content.php?status=gallery_deleted");
+    exit;
+}
+
+// Handle article deletion
+if (isset($_GET['delete_article_id'])) {
+    // We need to make sure the article belongs to the user via blog
+    $stmt = $db->prepare("DELETE articles FROM gallery_site_db.articles 
+                          INNER JOIN gallery_site_db.blogs ON articles.blog_id = blogs.id 
+                          WHERE articles.id = :id AND blogs.author_user_id = :userId");
+    $stmt->execute(['id' => $_GET['delete_article_id'], 'userId' => $userId]);
+    header("Location: my_content.php?status=article_deleted");
+    exit;
+}
+
 // Fetch user's galleries
 $stmt = $db->prepare("SELECT id, name, description FROM gallery_site_db.galleries WHERE author_user_id = :userId");
 $stmt->execute(['userId' => $userId]);
@@ -41,7 +60,8 @@ try {
     echo $twig->render('my_content.twig', [
         'page_title' => 'Conținutul Meu',
         'galleries' => $galleries,
-        'articles' => $articles
+        'articles' => $articles,
+        'status' => $_GET['status'] ?? null
     ]);
 } catch (LoaderError|RuntimeError|SyntaxError $e) {
     error_log($e->getMessage());

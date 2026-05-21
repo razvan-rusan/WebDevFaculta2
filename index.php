@@ -17,6 +17,8 @@ $twig->addGlobal('session', $_SESSION);
 
 $db = Database::getConnection();
 
+//phpinfo();
+
 // Fetch all galleries
 $stmt = $db->prepare("SELECT galleries.id, users.username AS author_name, galleries.name, galleries.description 
                       FROM galleries 
@@ -34,7 +36,7 @@ $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 try {
     echo $twig->render('home.twig', [
-        'page_title' => 'Solanum - Home',
+        'page_title' => 'SiteGenial - Home',
         'galleries' => $galleries,
         'articles' => $articles
     ]);

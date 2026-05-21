@@ -29,12 +29,12 @@ INSERT INTO galleries (author_user_id, name) VALUES
                                                  (5, 'Transylvanian Castles'),
                                                  (1, 'System Icons');
 
-INSERT INTO article_comments (article_id, content) VALUES
-                                                       (1, 'First comment! Looking forward to the updates.'),
-                                                       (2, 'Agreed, PHP is alive and well in 2026.'),
-                                                       (2, 'Can you do a follow-up on Composer best practices?'),
-                                                       (4, 'The architecture in the Old Town is truly unique.'),
-                                                       (5, 'The part about rim lighting was a game changer for me.');
+INSERT INTO article_comments (article_id, user_id, content) VALUES
+                                                       (1, 2, 'First comment! Looking forward to the updates.'),
+                                                       (2, 3, 'Agreed, PHP is alive and well in 2026.'),
+                                                       (2, 5, 'Can you do a follow-up on Composer best practices?'),
+                                                       (4, 1, 'The architecture in the Old Town is truly unique.'),
+                                                       (5, 4, 'The part about rim lighting was a game changer for me.');
 
 INSERT INTO gallery_comments (gallery_id, content) VALUES
                                                        (1, 'The neon color palette is absolutely stunning.'),

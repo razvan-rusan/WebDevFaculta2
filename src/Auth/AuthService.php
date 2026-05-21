@@ -11,7 +11,7 @@ class AuthService
     {
         $db = Database::getConnection();
 
-        $stmt = $db->prepare("SELECT * FROM users WHERE username = :username");
+        $stmt = $db->prepare("SELECT * FROM gallery_site_db.users WHERE username = :username");
         $stmt->execute(['username' => $username]);
         $user = $stmt->fetch();
 
@@ -40,6 +40,25 @@ class AuthService
     public static function isAdmin(): bool
     {
         return isset($_SESSION['role']) && $_SESSION['role'] == 'admin';
+    }
+
+    public static function register($username, $password): bool
+    {
+        $db = Database::getConnection();
+
+        // Check if username already exists
+        $stmt = $db->prepare("SELECT id FROM gallery_site_db.users WHERE username = :username");
+        $stmt->execute(['username' => $username]);
+        if ($stmt->fetch()) {
+            return false;
+        }
+
+        $hash = password_hash($password, PASSWORD_BCRYPT);
+        $stmt = $db->prepare("INSERT INTO gallery_site_db.users (username, password_hash, role) VALUES (:username, :password_hash, 'normal_user')");
+        return $stmt->execute([
+            'username' => $username,
+            'password_hash' => $hash
+        ]);
     }
 
     public static function logout() {

@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="p-5 mb-5 bg-dark border border-secondary text-light rounded-3 shadow-sm">
-        <h1 class="display-5 fw-bold text-primary">Bine ai venit la Solanum!</h1>
+        <h1 class="display-5 fw-bold text-primary">Bine ai venit la SiteGenial!</h1>
         <p class="col-md-8 fs-5 text-muted">Explorează galerii foto și articole interesante de la comunitatea noastră.</p>
     </div>
 
@@ -52,8 +52,15 @@
                             <div class="card-body">
                                 <h5 class="card-title text-light fw-bold">{{ article.title }}</h5>
                                 <h6 class="card-subtitle mb-2 text-info">Scris de: {{ article.author_name }}</h6>
-                                <p class="card-text text-muted">{{ article.content|slice(0, 200) }}...</p>
-                                <a href="#" class="btn btn-outline-info btn-sm">Citește mai mult</a>
+                                <div class="card-text text-muted">
+                                    {% set preview = article.content|slice(0, 200) %}
+                                    {% for paragraph in preview|split('\n') %}
+                                        {% if paragraph|trim is not empty %}
+                                            <p class="mb-1">{{ paragraph|trim }}{{ loop.last and article.content|length > 200 ? '...' : '' }}</p>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <a href="../article.php?articleId={{ article.id }}" class="btn btn-outline-info btn-sm">Citește mai mult</a>
                             </div>
                         </div>
                     </div>

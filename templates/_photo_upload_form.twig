@@ -1,0 +1,10 @@
+<h5 class="text-light mb-3">Încarcă Fotografie Nouă</h5>
+<form action="../edit_gallery.php{{ is_edit ? '?galleryId=' ~ gallery.id : '' }}" method="POST" enctype="multipart/form-data">
+    {% if is_edit %}
+        <input type="hidden" name="gallery_id" value="{{ gallery.id }}">
+    {% endif %}
+    <div class="mb-3">
+        <input type="file" class="form-control bg-dark text-light border-secondary" id="photo" name="photo" accept="image/*" required>
+    </div>
+    <button type="submit" name="upload_photo" class="btn btn-success">Încarcă</button>
+</form>

@@ -16,6 +16,8 @@ if (!AuthService::isAdmin()) {
     exit;
 }
 
+
+
 $db = Database::getConnection();
 
 // Handle user deletion
@@ -23,6 +25,22 @@ if (isset($_GET['delete_user_id'])) {
     $stmt = $db->prepare("DELETE FROM gallery_site_db.users WHERE id = :id AND role != 'admin'");
     $stmt->execute(['id' => $_GET['delete_user_id']]);
     header("Location: admin.php?status=user_deleted");
+    exit;
+}
+
+// Handle gallery deletion
+if (isset($_GET['delete_gallery_id'])) {
+    $stmt = $db->prepare("DELETE FROM gallery_site_db.galleries WHERE id = :id");
+    $stmt->execute(['id' => $_GET['delete_gallery_id']]);
+    header("Location: admin.php?status=gallery_deleted");
+    exit;
+}
+
+// Handle article deletion
+if (isset($_GET['delete_article_id'])) {
+    $stmt = $db->prepare("DELETE FROM gallery_site_db.articles WHERE id = :id");
+    $stmt->execute(['id' => $_GET['delete_article_id']]);
+    header("Location: admin.php?status=article_deleted");
     exit;
 }
 

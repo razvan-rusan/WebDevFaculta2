@@ -44,9 +44,13 @@ create table gallery_site_db.article_comments
     id         int auto_increment
         primary key,
     article_id int      not null,
+    user_id    int      not null,
     content    tinytext not null comment 'Continutul textual al comentariului.',
     constraint article_comments_articles_id_fk
         foreign key (article_id) references gallery_site_db.articles (id)
+            on update cascade on delete cascade,
+    constraint article_comments_users_id_fk
+        foreign key (user_id) references gallery_site_db.users (id)
             on update cascade on delete cascade
 );
 

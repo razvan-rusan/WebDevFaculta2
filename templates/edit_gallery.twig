@@ -1,0 +1,79 @@
+{% extends "base.twig" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            {% if error %}
+                <div class="alert alert-danger">
+                    {% if error == 'post_too_large' %}
+                        Fișierul trimis este prea mare (depășește limita serverului).
+                    {% elseif error == 'file_too_large_ini' or error == 'file_too_large_form' %}
+                        Imaginea este prea mare. Te rugăm să încarci un fișier mai mic.
+                    {% elseif error == 'partial_upload' %}
+                        Imaginea a fost încărcată doar parțial. Reîncearcă.
+                    {% elseif error == 'no_file' %}
+                        Niciun fișier nu a fost selectat.
+                    {% else %}
+                        A apărut o eroare la încărcarea imaginii.
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <div class="card bg-dark border-secondary shadow-sm mb-4">
+                <div class="card-header border-secondary">
+                    <h3 class="text-primary mb-0">{{ is_edit ? 'Editează Galerie' : 'Adaugă Galerie Nouă' }}</h3>
+                </div>
+                <div class="card-body">
+                    <form action="../edit_gallery.php{{ is_edit ? '?galleryId=' ~ gallery.id : '' }}" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="gallery_id" value="{{ gallery.id }}">
+                        <div class="mb-3">
+                            <label for="name" class="form-label text-light">Nume Galerie</label>
+                            <input type="text" class="form-control bg-dark text-light border-secondary" id="name" name="name" value="{{ gallery.name }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label text-light">Descriere (Opțional)</label>
+                            <textarea class="form-control bg-dark text-light border-secondary" id="description" name="description" rows="3">{{ gallery.description }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="photo" class="form-label text-light">Încarcă Fotografie (Opțional)</label>
+                            <input type="file" class="form-control bg-dark text-light border-secondary" id="photo" name="photo" accept="image/*">
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="../my_content.php" class="btn btn-outline-secondary">Anulează</a>
+                            <button type="submit" name="save_gallery" class="btn btn-primary">{{ is_edit ? 'Salvează Modificările' : 'Creează Galeria' }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% if is_edit %}
+                <div class="card bg-dark border-secondary shadow-sm">
+                    <div class="card-header border-secondary">
+                        <h4 class="text-info mb-0">Fotografii în Galerie</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3 mb-4">
+                            {% for photo in photos %}
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <img src="{{ photo.file_path }}" class="img-fluid rounded border border-secondary" alt="Photo">
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="col-12">
+                                    <p class="text-muted">Nicio fotografie în această galerie.</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <hr class="border-secondary">
+
+                        {% include '_photo_upload_form.twig' %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

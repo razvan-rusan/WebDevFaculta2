@@ -1,0 +1,61 @@
+{% extends "base.twig" %}
+
+{% block title %}{{ article.title }} - {{ page_title }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <article class="p-5 mb-5 bg-dark border border-secondary text-light rounded-3 shadow-sm">
+                <h1 class="display-5 fw-bold text-primary">{{ article.title }}</h1>
+                <p class="text-info mb-4">Scris de: <strong>{{ article.author_name }}</strong></p>
+                <hr class="border-secondary">
+                <div class="fs-5 mt-4 text-start">
+                    {% for paragraph in article.content|split('\n') %}
+                        {% if paragraph|trim is not empty %}
+                            <p>{{ paragraph|trim }}</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </article>
+
+            <section class="comments-section mt-5">
+                <h3 class="mb-4">Comentarii</h3>
+
+                <div class="mb-5">
+                    {% for comment in comments %}
+                        <div class="card bg-dark border-secondary mb-3 shadow-sm">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-info">{{ comment.author_name }}</h6>
+                                <p class="card-text text-light">{{ comment.content }}</p>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">Nu există comentarii pentru acest articol încă. Fii primul care lasă unul!</p>
+                    {% endfor %}
+                </div>
+
+                <div class="card bg-dark border-secondary shadow-sm">
+                    <div class="card-body">
+                        {% if session.user_id %}
+                            <h5 class="card-title text-light mb-3">Lasă un comentariu</h5>
+                            <form action="../article.php?articleId={{ article.id }}" method="POST">
+                                <div class="mb-3">
+                                    <textarea class="form-control bg-dark text-light border-secondary" name="content" rows="3" placeholder="Scrie ceva..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Trimite</button>
+                            </form>
+                        {% else %}
+                            <p class="text-center py-3 m-0">
+                                <a href="../login.php" class="btn btn-outline-primary">Log in to leave a comment</a>
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+            
+            <div class="mt-4 mb-5">
+                <a href="../index.php" class="btn btn-outline-secondary">Înapoi la Acasă</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
